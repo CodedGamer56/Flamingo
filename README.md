@@ -1,0 +1,2 @@
+# Flamingo
+🦩 Truth table generator 
