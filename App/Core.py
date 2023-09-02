@@ -1,29 +1,27 @@
-# All core features are implemented here
-
-import mysql.connector as mysql
 import colorful as cf
 
-def run():
-    cf.use_true_colors()
-    
-    database = mysql.connect(host='localhost', user='root', database='Flamingo', password='mysql56')
-    
-    if database.is_connected():
-        print('Connected to database')
+from . import Database as db
+from . import Render as UI
+from . import Log as cmd
+
+running = True
+
+def init():
+    # Initialization work is done here
+    db.init()
+    UI.render_menu()
+
+def new_journey():
+    label = input('Journey Name: ')
+    exists = db.get_subjects('subject', 'WHERE subject = "{label}"'.format(label = label))
+
+    if label == '':
+        cmd.error('Cannot accept empty label')
+    elif exists != []:
+        cmd.error('Journey already exists')
     else:
-        print('Problem in connecting to database')
-    
-    db_cursor = database.cursor()
-    db_cursor.execute('SELECT * FROM journey ORDER BY subject')
-    
-    subjects = db_cursor.fetchall()
-    
-    for i in subjects:
-        db_cursor.execute('SELECT name FROM quest WHERE parent_id = {id}'.format(id = i[0]))
-        data = db_cursor.fetchall()
-        print(cf.bold_cyan(i[1] + ':'))
-    
-        for j in data:
-            print(cf.grey('\t' + j[0]))
-    
-    database.close()
+        cmd.debug(db.create_journey(label))
+
+def end():
+    db.end()
+    cmd.msg('Bye!')
