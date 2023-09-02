@@ -11,7 +11,7 @@ def render_menu():
         data = db.get_quests('name', 'WHERE parent_id = {id}'.format(id = i[0]))
 
         for j in data:
-            print('\t', cf.grey(j[0]))
+            print('\t', cf.grey(j))
             
 '''
 Design Ideas

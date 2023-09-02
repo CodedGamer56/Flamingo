@@ -1,7 +1,6 @@
 from App import Core
 
 Core.init()
-Core.new_journey()
 Core.end()
 
 '''
