@@ -1,6 +1,7 @@
 import colorful as cf
 
 from . import Database as db
+from . import Handler as check
 from . import Render as UI
 from . import Log as cmd
 
@@ -13,27 +14,54 @@ def init():
 
 def new_journey():
     label = input('Journey Name: ')
-    exists = db.exists_journey(label)
 
-    if label == '':
-        cmd.error('Cannot accept empty label')
-    elif exists == False:
-        cmd.error('Journey already exists')
-    else:
+    try:
+        check.journey(label, False)
         cmd.debug(db.create_journey(label))
+    except Exception as err:
+        cmd.error(err)
 
 def new_quest():
     journey = input('Journey Name: ')
     label = input('Quest Name: ')
 
-    if db.exists_journey(journey) == False:
-        cmd.error('No such journey exists')
-    elif label == '':
-        cmd.error('Cannot accept empty label')
-    else:
-        pid = db.get_subjects(col = 'id', ext = 'WHERE subject = "{_journey}"'.format(_journey = journey))
+    try:
+        check.journey(label)
+        check.quest(label, False)
+
+        pid = db.get_subjects(col = 'id', ext = 'WHERE subject = "{}"'.format(journey))
         db.create_quest(label, pid[0])
+    except Exception as err:
+        cmd.error(err)
+
+def remove_journey():
+    journey = input('Journey Name: ')
     
+    try:
+        check.journey(journey)
+
+        pid = db.get_subjects(col = 'id', ext = 'WHERE subject = "{}"'.format(journey))
+        db.del_quest(pid[0])
+        db.del_journey(journey)    
+    except Exception as err:
+        cmd.error(err)
+
+def remove_quest():
+    journey = input('Journey Name: ')
+    quest = input('Quest Name: ')
+
+    try:
+        check.journey(journey)
+        check.quest(quest)
+        
+        pid = db.get_subjects(col = 'id', ext = 'WHERE subject = "{}"'.format(journey))
+        db.del_quest((pid[0], quest), 'parent_id = {0} and name = "{1}"')
+    except Exception as err:
+        cmd.error(err)
+
 def end():
     db.end()
     cmd.msg('Bye!')
+
+# Extension Object
+#   Conditional statement - 

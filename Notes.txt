@@ -1,0 +1,6 @@
+To Fix:
+	- Quest remove method 
+To Do:
+	- Revamp ext query
+	- Revamp Handler
+	- Error Handling Issues (Handler module)

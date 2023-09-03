@@ -12,10 +12,10 @@ def init():
         cursor = db_object.cursor()
         cmd.debug('Connection established with database')
     except Exception as db_error:
-        cmd.error('Failed to connect to database - {error}'.format(error = db_error))
+        cmd.error('Failed to connect to database - {}'.format(db_error))
 
 def get_subjects(col = '*', ext = 'ORDER BY subject'):
-    query = 'SELECT {column} FROM journey {extension}'.format(column = col, extension = ext)
+    query = 'SELECT {0} FROM journey {1}'.format(col, ext)
     cursor.execute(query)
     feedback = cursor.fetchall()
 
@@ -25,7 +25,7 @@ def get_subjects(col = '*', ext = 'ORDER BY subject'):
     return feedback
 
 def get_quests(col = '*', ext = ''):
-    query = 'SELECT {column} FROM quest {extension}'.format(column = col, extension = ext)
+    query = 'SELECT {0} FROM quest {1}'.format(col, ext)
     cursor.execute(query)
     feedback = cursor.fetchall()
     
@@ -53,13 +53,25 @@ def exists_quest(_quest):
     return exists
 
 def create_journey(_subject):
-    query = 'INSERT INTO journey(subject) VALUE ("{subjectLabel}")'.format(subjectLabel = _subject.title())
+    query = 'INSERT INTO journey(subject) VALUE ("{}")'.format(_subject.title())
     cursor.execute(query)
     feedback = cursor.fetchall()
     return feedback
 
 def create_quest(_quest, _pid):
-    query = 'INSERT INTO quest(parent_id, name) VALUE ({pid}, "{questLabel}")'.format(pid = _pid, questLabel = _quest.title())
+    query = 'INSERT INTO quest(parent_id, name) VALUE ({0}, "{1}")'.format( _pid, _quest.title())
+    cursor.execute(query)
+    feedback = cursor.fetchall()
+    return feedback
+
+def del_journey(value, condition = 'subject = '):
+    query = 'DELETE FROM journey WHERE ' + condition + '{}' .format(value)
+    cursor.execute(query)
+    feedback = cursor.fetchall()
+    return feedback
+
+def del_quest(value, condition = 'parent_id = '):
+    query = 'DELETE FROM quest WHERE ' + condition.format(*value)
     cursor.execute(query)
     feedback = cursor.fetchall()
     return feedback
