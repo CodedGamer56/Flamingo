@@ -90,6 +90,12 @@ def create_card(_front, _back, _qid):
     feedback = cursor.fetchall()
     return feedback
 
+def edit_card(newVal, condition, col = 'review'):
+    query = 'UPDATE card SET {0} = {1} WHERE {2}'.format(col, newVal, condition)
+    cursor.execute(query)
+    feedback = cursor.fetchall()
+    return feedback
+
 def del_journey(value, condition = 'subject = {}'):
     query = 'DELETE FROM journey WHERE ' + condition.format(value)
     cursor.execute(query)

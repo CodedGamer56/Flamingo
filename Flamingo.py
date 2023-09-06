@@ -1,6 +1,7 @@
 from App import Core
 
 Core.run()
+Core.study()
 Core.end()
 
 '''
