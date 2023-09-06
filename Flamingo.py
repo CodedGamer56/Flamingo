@@ -1,6 +1,6 @@
 from App import Core
 
-Core.init()
+Core.run()
 Core.end()
 
 '''
@@ -8,17 +8,15 @@ Callback functions:
 - New
     - Journey
         - Name
-        - Study Template
+        - Study Template (enhancement)
     - Quest
         - Name
         - Level
-        - Study Template (Custom)
     - Card
-        - Type (Basic, Cloze)
+        - Types (enhancement)
         - Front
         - Back
-        - Hint (Optional)
-        - Style Features
+        - Hint (enhancement)
 - Edit/Remove
     - Journey
     - Quest
@@ -31,13 +29,5 @@ Callback functions:
     - Quest
     - Card
     - Stats
-- Study
-    - Session
-        - Topics
-        - Difficulty level
-        - Time limit
-        - Cards per session
-- Stats (Low Priority)
-    - Progress
-    - Graphs
+- 
 '''
